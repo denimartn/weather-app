@@ -1,14 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import "./tailwind.output.css";
 
 function App() {
   return (
-    <div className="max-w-md mx-auto flex p-6 bg-gray-100 mt-10 rounded-lg shadow-xl">
-        <h1 className="text-2xl text-blue-700 leading-tight">
-          Weather app
-        </h1>
+    <div className="main-container w-full">
+      <div className="container max-w-md mx-auto px-6 py-10">
+        <input
+          className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg  px-4 py-2  w-full"
+          type="text"
+          placeholder="Type a place..."
+        ></input>
+      </div>
     </div>
   );
 }
