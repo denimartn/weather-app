@@ -2,34 +2,36 @@ import React from "react";
 import "./App.css";
 import "./tailwind.output.css";
 import axios from "axios";
-
 function App() {
   const [inputValue, setInputValue] = React.useState("");
-  const [items, setItems] = React.useState([]);
-  let itemsToRender = items;
-  let woeid = "";
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [locationWeather, setLocationWeather] = React.useState();
 
-  const api =
-    "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
+  // Utilities
+
+  let icons = {
+    c: "",
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    addItem();
-    const query = "milan";
+    const api =
+      "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
+    const query = inputValue;
     const res = await axios.get(`${api}/location/search/?query=${query}`);
-    woeid = res.data[0].woeid;
-    console.log("woeid", woeid);
-    const resp2 = await axios.get(`${api}/location/${woeid}`);
+    let woeid = res.data[0].woeid;
+    const location = await axios.get(`${api}/location/${woeid}`);
+
+    setLocationWeather({
+      city: location.data.title,
+      iconAbbr: location.data.consolidated_weather[0].weather_state_abbr,
+      minTemp: Math.floor(location.data.consolidated_weather[0].min_temp),
+      maxTemp: Math.floor(location.data.consolidated_weather[0].max_temp),
+      description: location.data.consolidated_weather[0].weather_state_name,
+    });
+    setIsLoaded(true);
   };
-  const addItem = () => {
-    setItems([
-      {
-        id: Math.random(),
-        place: inputValue,
-        img: "https://picsum.photos/70/70",
-        degree: "23",
-      },
-    ]);
-  };
+
   return (
     <div className="main-container w-full">
       <h1 className="text-center m-4 font-bold text-4xl max-w-md mx-auto">
@@ -51,13 +53,26 @@ function App() {
           </button>
         </div>
         <div className="cards-container max-w-md mx-auto px-2">
-          {itemsToRender.map((item) => (
-            <div className="card" key={item.id}>
-              <h3 className="place mb-2">{item.place}</h3>
-              <img className="image mb-2" src={item.img} />
-              <div className="degree mb-2">{item.degree}</div>
+          {!isLoaded ? (
+            <div>Loading....</div>
+          ) : (
+            <div className="card border border-gray-300 w-32 px-4 py-4  ">
+              <div className="place mb-2">
+                <h1 className="city text-center">{locationWeather.city}</h1>
+                <img
+                  className="icon mb-2 w-10 h-10 mx-auto mt-2"
+                  src={`https://www.metaweather.com/static/img/weather/${locationWeather.iconAbbr}.svg`}
+                />
+                <div className="flex justify-between">
+                  <p className="temp">{locationWeather.minTemp}°C</p>
+                  <p className="temp">{locationWeather.maxTemp}°C</p>
+                </div>
+                <p className="description text-center">
+                  {locationWeather.description}
+                </p>
+              </div>
             </div>
-          ))}
+          )}
         </div>
       </form>
     </div>
