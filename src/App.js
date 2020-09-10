@@ -5,31 +5,27 @@ import axios from "axios";
 function App() {
   const [inputValue, setInputValue] = React.useState("");
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [locationWeather, setLocationWeather] = React.useState();
-
-  // Utilities
-
-  let icons = {
-    c: "",
-  };
+  const [locationWeather, setLocationWeather] = React.useState([]);
+  const [title, setTitle] = React.useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const api =
       "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
     const query = inputValue;
-    const res = await axios.get(`${api}/location/search/?query=${query}`);
+    const res = await axios.get(`${api}/location/search/?query=jerusalem`);
     let woeid = res.data[0].woeid;
-    const location = await axios.get(`${api}/location/${woeid}`);
 
-    setLocationWeather({
-      city: location.data.title,
-      iconAbbr: location.data.consolidated_weather[0].weather_state_abbr,
-      minTemp: Math.floor(location.data.consolidated_weather[0].min_temp),
-      maxTemp: Math.floor(location.data.consolidated_weather[0].max_temp),
-      description: location.data.consolidated_weather[0].weather_state_name,
-    });
+    console.log("ress", res);
+    const location = await axios.get(`${api}/location/${woeid}`);
+    console.log(location);
+    setTitle(location.data.title + ", " + location.data.parent.title);
+    let newArr = [];
+    for (let weather of location.data.consolidated_weather) {
+      newArr.push(weather);
+    }
     setIsLoaded(true);
+    setLocationWeather(newArr);
   };
 
   return (
@@ -52,31 +48,49 @@ function App() {
             Search
           </button>
         </div>
-        <div className="cards-container max-w-md mx-auto px-2">
+        <h1 className="title text-center font-bold text-3xl">{title}</h1>
+
+        <div className="container mx-auto px-2 flex justify-center">
           {!isLoaded ? (
             <div>Loading....</div>
           ) : (
-            <div className="card border border-gray-300 w-32 px-4 py-4  ">
-              <div className="place mb-2">
-                <h1 className="city text-center">{locationWeather.city}</h1>
-                <img
-                  className="icon mb-2 w-10 h-10 mx-auto mt-2"
-                  src={`https://www.metaweather.com/static/img/weather/${locationWeather.iconAbbr}.svg`}
-                />
-                <div className="flex justify-between">
-                  <p className="temp">{locationWeather.minTemp}°C</p>
-                  <p className="temp">{locationWeather.maxTemp}°C</p>
+            <div className="cards  w-32 px-4 py-4 flex justify-center">
+              {locationWeather.map((weather, index) => (
+                <div
+                  key={index}
+                  className="card shadow-lg rounded  px-4 py-4 mr-4"
+                >
+                  <h2 className="city text-center mb-4">
+                    {weather.applicable_date}
+                  </h2>
+                  <img
+                    className="icon mb-2 w-10 h-10 mx-auto mt-2 mb-4"
+                    src={`https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`}
+                  />
+                  <div className="flex justify-between mb-4">
+                    <p className="temp mr-6">{floor(weather.min_temp)}°C</p>
+                    <p className="temp">{floor(weather.max_temp)}°C</p>
+                  </div>
+                  <p className="description text-center">
+                    {weather.weather_state_name}
+                  </p>
                 </div>
-                <p className="description text-center">
-                  {locationWeather.description}
-                </p>
-              </div>
+              ))}
             </div>
           )}
         </div>
       </form>
     </div>
   );
+}
+
+// Utilities
+function floor(n) {
+  return Math.floor(n);
+}
+
+function dateConverter(str) {
+  return new Date(str);
 }
 
 export default App;
