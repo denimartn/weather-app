@@ -13,7 +13,7 @@ function App() {
     setState("loading");
     try {
       const api =
-        "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
+        "https://cors-anywhere.herokuap.com/https://www.metaweather.com/api";
       const query = inputValue;
       const res = await axios.get(`${api}/location/search/?query=${query}`);
       if (!res.data[0]) {
@@ -58,23 +58,23 @@ function App() {
             Search
           </button>
         </div>
+
         {state === "ready" ? (
           <h1 className="title text-center font-bold text-3xl">{title}</h1>
         ) : null}
 
         <div className="container mx-auto px-2 flex justify-center">
+          {state === "loading" ? <p>Loading...</p> : null}
           {state === "error" ? (
             <div
-              className="bg-red-lightest border border-red-light text-red-dark pl-4 pr-8 py-3 rounded relative"
+              className="bg-red-lightest border border-red-light text-red-dark pl-4 pr-8 py-3 rounded flex"
               role="alert"
             >
-              <strong className="font-bold">Brbrbr!</strong>
-              <span className="block sm:inline">
-                Something seriously went wrong.
-              </span>
-              <span className="absolute pin-t pin-b pin-r pr-2 py-3">
+              <strong className="font-bold">Brbrbr! </strong>
+              Something seriously went wrong.
+              <span>
                 <svg
-                  className="h-6 w-6 text-red"
+                  className="h-6 w-6 red"
                   role="button"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
@@ -83,12 +83,11 @@ function App() {
                   }}
                 >
                   <title>Close</title>
-                  <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                  <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z mb-2" />
                 </svg>
               </span>
             </div>
           ) : null}
-          {state === "loading" ? <p>Loading...</p> : null}
           {state === "ready" ? (
             <div className="cards  w-32 px-4 py-4 flex justify-center">
               {locationWeather.map((weather, index) => (
