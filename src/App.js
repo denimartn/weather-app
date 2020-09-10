@@ -13,7 +13,7 @@ function App() {
     const api =
       "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
     const query = inputValue;
-    const res = await axios.get(`${api}/location/search/?query=jerusalem`);
+    const res = await axios.get(`${api}/location/search/?query=${query}`);
     let woeid = res.data[0].woeid;
 
     console.log("ress", res);
@@ -61,7 +61,7 @@ function App() {
                   className="card shadow-lg rounded  px-4 py-4 mr-4"
                 >
                   <h2 className="city text-center mb-4">
-                    {weather.applicable_date}
+                    {dateConverter(weather.applicable_date)}
                   </h2>
                   <img
                     className="icon mb-2 w-10 h-10 mx-auto mt-2 mb-4"
@@ -90,7 +90,15 @@ function floor(n) {
 }
 
 function dateConverter(str) {
-  return new Date(str);
+  let newStr = "";
+  const dateToCheck = new Date(str);
+  const today = new Date();
+  if (dateToCheck.toDateString() === today.toDateString()) {
+    newStr = "Today";
+  } else {
+    newStr = dateToCheck.toDateString();
+  }
+  return newStr;
 }
 
 export default App;
