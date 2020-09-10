@@ -11,20 +11,31 @@ function App() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setState("loading");
-    const api =
-      "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
-    const query = inputValue;
-    const res = await axios.get(`${api}/location/search/?query=${query}`);
-    let woeid = res.data[0].woeid;
-    const location = await axios.get(`${api}/location/${woeid}`);
+    console.log(state);
+    try {
+      const api =
+        "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
+      const query = inputValue;
+      const res = await axios.get(`${api}/location/search/?query=${query}`);
+      if (!res.data[0]) {
+        setState("error");
+        console.log(state);
+        return;
+      }
+      let woeid = res.data[0].woeid;
 
-    setTitle(location.data.title + ", " + location.data.parent.title);
-    let newArr = [];
-    for (let weather of location.data.consolidated_weather) {
-      newArr.push(weather);
+      const location = await axios.get(`${api}/location/${woeid}`);
+
+      setTitle(location.data.title + ", " + location.data.parent.title);
+      let newArr = [];
+      for (let weather of location.data.consolidated_weather) {
+        newArr.push(weather);
+      }
+      setState("ready");
+      setLocationWeather(newArr);
+    } catch (err) {
+      console.log(err);
     }
-    setState("ready");
-    setLocationWeather(newArr);
   };
 
   return (
@@ -50,7 +61,9 @@ function App() {
         {state === "ready" ? (
           <h1 className="title text-center font-bold text-3xl">{title}</h1>
         ) : null}
+
         <div className="container mx-auto px-2 flex justify-center">
+          {state === "error" ? <p>Location not found</p> : null}
           {state === "loading" ? <p>Loading...</p> : null}
           {state === "ready" ? (
             <div className="cards  w-32 px-4 py-4 flex justify-center">
