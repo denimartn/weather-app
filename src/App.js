@@ -1,30 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import "./tailwind.output.css";
 import axios from "axios";
 function App() {
   const [inputValue, setInputValue] = React.useState("");
-  const [isLoaded, setIsLoaded] = React.useState(false);
   const [locationWeather, setLocationWeather] = React.useState([]);
   const [title, setTitle] = React.useState("");
+  const [state, setState] = React.useState("empty");
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setState("loading");
     const api =
       "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
     const query = inputValue;
     const res = await axios.get(`${api}/location/search/?query=${query}`);
     let woeid = res.data[0].woeid;
-
-    console.log("ress", res);
     const location = await axios.get(`${api}/location/${woeid}`);
-    console.log(location);
+
     setTitle(location.data.title + ", " + location.data.parent.title);
     let newArr = [];
     for (let weather of location.data.consolidated_weather) {
       newArr.push(weather);
     }
-    setIsLoaded(true);
+    setState("ready");
     setLocationWeather(newArr);
   };
 
@@ -48,12 +47,12 @@ function App() {
             Search
           </button>
         </div>
-        <h1 className="title text-center font-bold text-3xl">{title}</h1>
-
+        {state === "ready" ? (
+          <h1 className="title text-center font-bold text-3xl">{title}</h1>
+        ) : null}
         <div className="container mx-auto px-2 flex justify-center">
-          {!isLoaded ? (
-            <div>Loading....</div>
-          ) : (
+          {state === "loading" ? <p>Loading...</p> : null}
+          {state === "ready" ? (
             <div className="cards  w-32 px-4 py-4 flex justify-center">
               {locationWeather.map((weather, index) => (
                 <div
@@ -77,7 +76,7 @@ function App() {
                 </div>
               ))}
             </div>
-          )}
+          ) : null}
         </div>
       </form>
     </div>
