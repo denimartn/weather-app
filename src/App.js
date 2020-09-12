@@ -153,7 +153,11 @@ function dateConverter(str) {
   if (dateToCheck.toDateString() === today.toDateString()) {
     newStr = "Today";
   } else {
-    newStr = dateToCheck.toDateString();
+    let string = dateToCheck.toDateString();
+    let splitted = string.split(" ");
+    splitted.pop();
+    newStr = splitted.join(" ");
+    //2020
   }
   return newStr;
 }
