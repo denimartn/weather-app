@@ -13,7 +13,7 @@ function App() {
     setState("loading");
     try {
       const api =
-        "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
+        "https://thingproxy.freeboard.io/fetch/https://www.metaweather.com/api";
       const query = inputValue;
       const res = await axios.get(`${api}/location/search/?query=${query}`);
       if (!res.data[0]) {
@@ -153,11 +153,13 @@ function dateConverter(str) {
   if (dateToCheck.toDateString() === today.toDateString()) {
     newStr = "Today";
   } else {
-    let string = dateToCheck.toDateString();
-    let splitted = string.split(" ");
-    splitted.pop();
-    newStr = splitted.join(" ");
-    //2020
+    //format date
+    let options = {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    };
+    newStr = new Intl.DateTimeFormat("en-US", options).format(dateToCheck);
   }
   return newStr;
 }
