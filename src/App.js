@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import "./tailwind.output.css";
+import "./tailwind.config.js";
 import axios from "axios";
 function App() {
   const [inputValue, setInputValue] = React.useState("");
@@ -40,15 +41,13 @@ function App() {
 
   return (
     <div className="main-container w-full ">
-      <h1 className="text-center m-4 font-bold text-4xl max-w-md mx-auto">
-        #weather app
-      </h1>
+      <div className="h-8 w-8 bg-blue-600 w-full"></div>
       <form onSubmit={onSubmit}>
         <div className="input-wrapper max-w-md mx-auto px-2 py-10 flex">
           <input
-            className="mr-1 bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg  px-4 py-2  w-full"
+            className="shadow appearance-none border rounded py-2 px-3 text-grey-darker mr-1 bg-white focus:outline-none  w-full"
             type="text"
-            placeholder="Type a place..."
+            placeholder="Enter a city"
             onChange={(event) => setInputValue(event.target.value)}
           ></input>
           <button
@@ -91,8 +90,6 @@ function App() {
               className="bg-red-100 border border-red-400 text-red pl-4 pr- py-3  px-3 rounded flex"
               role="alert"
             >
-              {/* add space */}
-              <strong className="font-bold">Brbrbr! </strong>
               Something seriously went wrong.
               <span>
                 <svg
@@ -115,7 +112,7 @@ function App() {
               {locationWeather.map((weather, index) => (
                 <div
                   key={index}
-                  className="card shadow-lg rounded  px-4 py-4 mr-4"
+                  className="card shadow-lg rounded  px-4 py-4 mr-4 bg-lightyGrey"
                 >
                   <h2 className="city text-center mb-4">
                     {dateConverter(weather.applicable_date)}
