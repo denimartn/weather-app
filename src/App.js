@@ -5,7 +5,6 @@ import axios from "axios";
 function App() {
   const [inputValue, setInputValue] = React.useState("");
   const [locationWeather, setLocationWeather] = React.useState([]);
-  const [title, setTitle] = React.useState("");
   const [state, setState] = React.useState("empty");
 
   const onSubmit = async (e) => {
@@ -24,7 +23,6 @@ function App() {
 
       const location = await axios.get(`${api}/location/${woeid}`);
 
-      setTitle(location.data.title + ", " + location.data.parent.title);
       let newArr = [];
       for (let weather of location.data.consolidated_weather) {
         newArr.push(weather);
@@ -40,8 +38,15 @@ function App() {
 
   return (
     <div className="main-container w-full ">
-      <div className="title  font-bold text-4xl mb-2 mt-8 text-center">Weather forecast</div>
-      <p className="subtitle text-center mb-2 text-sm">Made by <a className="subtitle text-sm" href="https://github.com/denimartn">Denise</a></p>
+      <div className="title  font-bold text-4xl mb-2 mt-8 text-center">
+        Weather forecast
+      </div>
+      <p className="subtitle text-center mb-2 text-sm">
+        Made by{" "}
+        <a className="subtitle text-sm" href="https://github.com/denimartn">
+          Denise
+        </a>
+      </p>
       <form onSubmit={onSubmit}>
         <div className="input-wrapper max-w-md mx-auto px-2 py-2 flex">
           <input
@@ -60,40 +65,46 @@ function App() {
 
         <div className="container mx-auto px-2 flex justify-center mt-5">
           {state === "loading" ? (
-               <div className="flex justify-center mt-5">
-               <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-20 w-20"></div>
-               </div>
+            <div className="flex justify-center mt-5">
+              <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-20 w-20"></div>
+            </div>
           ) : null}
           {state === "error" ? (
-        
-        <button className="error bg-red-100 border border-red-400 text-red p-2 rounded mx-auto "  onClick={() => {
-          setState("empty");
-        }}>
-      Hey, something seriously went wrong!
-</button>
+            <button
+              className="error bg-red-100 border border-red-400 text-red p-2 rounded mx-auto "
+              onClick={() => {
+                setState("empty");
+              }}
+            >
+              Hey, something seriously went wrong!
+            </button>
           ) : null}
           {state === "ready" ? (
             <div className="cards px-4 py-4 flex justify-center">
               {locationWeather.map((weather, index) => (
                 <div
                   key={index}
-                  className="card shadow-lg   px-4 py-4 mr-4 bg-white"
-                  >
-                  <h2 className="city text-center mb-4 text-white text-sm">
+                  className="card shadow-lg px-4 py-4 mr-4 bg-white"
+                >
+                  <h2 className="date text-center mb-4 text-sm">
                     {dateConverter(weather.applicable_date)}
                   </h2>
-                    <div className="flex">
-                  <img
-                    className="icon mb-2 w-10 h-10 mx-auto mt-2 mb-4"
-                    alt="weather icon"
-                    src={`https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`}
-                  />
+                  <div className="flex">
+                    <img
+                      className="icon mb-2 w-10 h-10 mx-auto mt-2 mb-4"
+                      alt="weather icon"
+                      src={`https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`}
+                    />
                   </div>
                   <div className="flex justify-between mb-4">
-                    <p className="temp mr-6 font-medium text-white">{floor(weather.min_temp)}°</p>
-                    <p className="temp font-medium text-white">{floor(weather.max_temp)}°</p>
+                    <p className="temp mr-6 font-medium">
+                      {floor(weather.min_temp)}°
+                    </p>
+                    <p className="temp font-medium">
+                      {floor(weather.max_temp)}°
+                    </p>
                   </div>
-                  <p className="description text-center  text-white">
+                  <p className="description text-center">
                     {weather.weather_state_name}
                   </p>
                 </div>
