@@ -41,74 +41,59 @@ function App() {
   return (
     <div className="main-container w-full ">
       <div className="title  font-bold text-4xl mb-2 mt-8 text-center">Weather forecast</div>
-      <p className="subtitle text-center mb-2">Made by <a className="subtitle" href="https://github.com/denimartn">Denise</a></p>
+      <p className="subtitle text-center mb-2 text-sm">Made by <a className="subtitle text-sm" href="https://github.com/denimartn">Denise</a></p>
       <form onSubmit={onSubmit}>
         <div className="input-wrapper max-w-md mx-auto px-2 py-2 flex">
           <input
-            className="shadow appearance-none border rounded py-2 px-3 text-grey-darker mr-1 bg-white focus:outline-none  w-full"
+            className="shadow appearance-none border rounded-lg py-2 px-3 text-grey-darker mr-1 bg-white focus:outline-none  w-full"
             type="text"
             placeholder="Enter a city"
             onChange={(event) => setInputValue(event.target.value)}
           ></input>
           <button
             type="submit"
-            className="focus:outline-none bg-dodgerblue-400 hover:bg-blue-700 text-white font-bold px-2 py-2 border rounded-lg"
+            className="bg-dodgerblue-400  appearance-none border rounded-lg py-2 px-3 text-white mr-1 font-bold focus:outline-none "
           >
             Search
           </button>
         </div>
 
-        {state === "ready" ? (
-          <h1 className="title text-center font-bold text-3xl">{title}</h1>
-        ) : null}
-
-        <div className="container mx-auto px-2 flex justify-center">
+        <div className="container mx-auto px-2 flex justify-center mt-5">
           {state === "loading" ? (
                <div className="flex justify-center mt-5">
-               <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-40 w-40"></div>
+               <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-20 w-20"></div>
                </div>
           ) : null}
           {state === "error" ? (
-            <div
-              className="bg-red-100 border border-red-400 text-red pl-4 pr- py-3  px-3 rounded flex"
-              role="alert"
-            >
-              Something seriously went wrong.
-              <span>
-                <svg
-                  className="h-6 w-6 red"
-                  role="button"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  onClick={() => {
-                    setState("empty");
-                  }}
-                >
-                  <title>Close</title>
-                  <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z mb-2" />
-                </svg>
-              </span>
-            </div>
+        
+        <button className="error bg-red-100 border border-red-400 text-red p-2 rounded mx-auto "  onClick={() => {
+          setState("empty");
+        }}>
+      Hey, something seriously went wrong!
+</button>
           ) : null}
           {state === "ready" ? (
-            <div className="cards  w-32 px-4 py-4 flex justify-center">
+            <div className="cards px-4 py-4 flex justify-center">
               {locationWeather.map((weather, index) => (
                 <div
                   key={index}
-                  className="card shadow-lg rounded  px-4 py-4 mr-4 bg-lightyGrey"
-                >
-                  <h2 className="city text-center mb-4">
+                  className="card shadow-lg   px-4 py-4 mr-4 bg-white"
+                  >
+                  <h2 className="city text-center mb-4 text-white text-sm">
                     {dateConverter(weather.applicable_date)}
                   </h2>
+                    <div className="flex">
                   <img
                     className="icon mb-2 w-10 h-10 mx-auto mt-2 mb-4"
+                    alt="weather icon"
                     src={`https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`}
                   />
-                  <div className="flex justify-between mb-4">
-                    <p className="temp mr-6">{floor(weather.min_temp)}°C</p>
-                    <p className="temp">{floor(weather.max_temp)}°C</p>
                   </div>
-                  <p className="description text-center">
+                  <div className="flex justify-between mb-4">
+                    <p className="temp mr-6 font-medium text-white">{floor(weather.min_temp)}°</p>
+                    <p className="temp font-medium text-white">{floor(weather.max_temp)}°</p>
+                  </div>
+                  <p className="description text-center  text-white">
                     {weather.weather_state_name}
                   </p>
                 </div>
@@ -116,7 +101,6 @@ function App() {
             </div>
           ) : null}
         </div>
-     
       </form>
     </div>
   );

@@ -37,9 +37,10 @@
   }
 }
 
-
-.title, .subtitle {
+.title,
+.subtitle {
   color: #4a5568;
+
 }
 
 .loader {
@@ -47,14 +48,41 @@
   animation: spinner 1.5s linear infinite;
 }
 
-
-
 @-webkit-keyframes spinner {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card {
+  background: linear-gradient(
+    0deg,
+    rgb(34 195 187) 0%,
+    rgb(173 45 253 / 58%) 100%
+  );
+  width: 10rem;
+  border-radius: 18px;
+}
+
+.cards {
+  margin-top: 16px
+}
+.temp {
+  font-size: 20px;
+}
+
+.error {
+  margin-top: 5rem
 }
