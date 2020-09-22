@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import "./tailwind.output.css";
-import "./tailwind.config.js";
 import axios from "axios";
 function App() {
   const [inputValue, setInputValue] = React.useState("");
@@ -41,9 +40,10 @@ function App() {
 
   return (
     <div className="main-container w-full ">
-      <div className="h-8 w-8 bg-blue-600 w-full"></div>
+      <div className="title  font-bold text-4xl mb-2 mt-8 text-center">Weather forecast</div>
+      <p className="subtitle text-center mb-2">Made by <a className="subtitle" href="https://github.com/denimartn">Denise</a></p>
       <form onSubmit={onSubmit}>
-        <div className="input-wrapper max-w-md mx-auto px-2 py-10 flex">
+        <div className="input-wrapper max-w-md mx-auto px-2 py-2 flex">
           <input
             className="shadow appearance-none border rounded py-2 px-3 text-grey-darker mr-1 bg-white focus:outline-none  w-full"
             type="text"
@@ -52,7 +52,7 @@ function App() {
           ></input>
           <button
             type="submit"
-            className="focus:outline-none bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-2 border rounded-lg"
+            className="focus:outline-none bg-dodgerblue-400 hover:bg-blue-700 text-white font-bold px-2 py-2 border rounded-lg"
           >
             Search
           </button>
@@ -64,26 +64,9 @@ function App() {
 
         <div className="container mx-auto px-2 flex justify-center">
           {state === "loading" ? (
-            <div className="inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150 cursor-not-allowed">
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Processing
-            </div>
+               <div className="flex justify-center mt-5">
+               <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-40 w-40"></div>
+               </div>
           ) : null}
           {state === "error" ? (
             <div
@@ -133,6 +116,7 @@ function App() {
             </div>
           ) : null}
         </div>
+     
       </form>
     </div>
   );
