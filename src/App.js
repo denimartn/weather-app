@@ -3,7 +3,7 @@ import "./App.css";
 import "./tailwind.output.css";
 import axios from "axios";
 import { Form } from "./Form";
-
+import { WeatherCards } from "./WeatherCards";
 
 function App() {
   const [inputValue, setInputValue] = React.useState("");
@@ -50,69 +50,39 @@ function App() {
           Denise
         </a>
       </p>
-      <Form
-          onSubmit={onSubmit}
-          setInputValue={setInputValue}
-        />
-        <div className="container mx-auto px-2 flex justify-center mt-5">
-          {state === "loading" ? (
-            <div className="flex justify-center mt-5">
-              <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-20 w-20"></div>
-            </div>
-          ) : null}
-          {state === "error" ? (
-            <button
-              className="error bg-red-100 border border-red-400 text-red p-2 rounded mx-auto "
-              onClick={() => {
-                setState("empty");
-              }}
-            >
-              Hey, something seriously went wrong!
-            </button>
-          ) : null}
-          {state === "ready" ? (
-            <div className="cards px-4 py-4 flex justify-center">
-              {locationWeather.map((weather, index) => (
-                <div
-                  key={index}
-                  className="card shadow-lg px-4 py-4 mr-4 bg-white"
-                >
-                  <h2 className="date text-center mb-4 text-sm">
-                    {dateConverter(weather.applicable_date)}
-                  </h2>
-                  <div className="flex">
-                    <img
-                      className="icon mb-2 w-10 h-10 mx-auto mt-2 mb-4"
-                      alt="weather icon"
-                      src={`https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`}
-                    />
-                  </div>
-                  <div className="flex justify-between mb-4">
-                    <p className="temp mr-6 font-medium">
-                      {floor(weather.min_temp)}°
-                    </p>
-                    <p className="temp font-medium">
-                      {floor(weather.max_temp)}°
-                    </p>
-                  </div>
-                  <p className="description text-center">
-                    {weather.weather_state_name}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </div>
+      <Form onSubmit={onSubmit} setInputValue={setInputValue} />
+
+      <div className="container mx-auto px-2 flex justify-center mt-5">
+        {state === "loading" ? (
+          <div className="flex justify-center mt-5">
+            <div className="loader ease-linear 0 rounded-full border-8 border-t-8  h-20 w-20"></div>
+          </div>
+        ) : null}
+        {state === "error" ? (
+          <button
+            className="error bg-red-100 border border-red-400 text-red p-2 rounded mx-auto "
+            onClick={() => {
+              setState("empty");
+            }}
+          >
+            Hey, something seriously went wrong!
+          </button>
+        ) : null}
+
+        {state === "ready" ? (
+          <WeatherCards locationWeather={locationWeather} />
+        ) : null}
+      </div>
     </div>
   );
 }
 
 // Utilities
-function floor(n) {
+export function floor(n) {
   return Math.floor(n);
 }
 
-function dateConverter(str) {
+export function dateConverter(str) {
   let newStr = "";
   const dateToCheck = new Date(str);
   const today = new Date();
