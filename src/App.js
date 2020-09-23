@@ -15,7 +15,7 @@ function App() {
     setState("loading");
     try {
       const api =
-        "https://thingproxy.freeboard.io/fetch/https://www.metaweather.com/api";
+        "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api";
       const query = inputValue;
       const res = await axios.get(`${api}/location/search/?query=${query}`);
       if (!res.data[0]) {
