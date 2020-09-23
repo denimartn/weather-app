@@ -1,7 +1,7 @@
 import React from "react";
 import { WeatherCard } from "./WeatherCard";
 import { dateConverter, floor } from "./utils";
-
+import "./WeatherCards.css"
 export const WeatherCards = (props) => {
   return (
     <div className="cards px-4 py-4 flex justify-center">
