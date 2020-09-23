@@ -2,6 +2,9 @@ import React from "react";
 import "./App.css";
 import "./tailwind.output.css";
 import axios from "axios";
+import { Form } from "./Form";
+
+
 function App() {
   const [inputValue, setInputValue] = React.useState("");
   const [locationWeather, setLocationWeather] = React.useState([]);
@@ -47,22 +50,10 @@ function App() {
           Denise
         </a>
       </p>
-      <form onSubmit={onSubmit}>
-        <div className="input-wrapper max-w-md mx-auto px-2 py-2 flex">
-          <input
-            className="shadow appearance-none border rounded-lg py-2 px-3 text-grey-darker mr-1 bg-white focus:outline-none  w-full"
-            type="text"
-            placeholder="Enter a city"
-            onChange={(event) => setInputValue(event.target.value)}
-          ></input>
-          <button
-            type="submit"
-            className="bg-dodgerblue-400  appearance-none border rounded-lg py-2 px-3 text-white mr-1 font-bold focus:outline-none "
-          >
-            Search
-          </button>
-        </div>
-
+      <Form
+          onSubmit={onSubmit}
+          setInputValue={setInputValue}
+        />
         <div className="container mx-auto px-2 flex justify-center mt-5">
           {state === "loading" ? (
             <div className="flex justify-center mt-5">
@@ -112,7 +103,6 @@ function App() {
             </div>
           ) : null}
         </div>
-      </form>
     </div>
   );
 }
